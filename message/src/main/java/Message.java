@@ -3,34 +3,34 @@ import java.util.Date;
 
 public class Message implements Serializable {
 
-    private Integer senderId;
-    private Integer recipientId;
+    private Long senderId;
+    private Long recipientId;
     private Date time;
     private String message;
 
     public Message() {
     }
 
-    public Message(Integer senderId, Integer recipientId, Date time, String message) {
+    public Message(Long senderId, Long recipientId, Date time, String message) {
         this.senderId = senderId;
         this.recipientId = recipientId;
         this.time = time;
         this.message = message;
     }
 
-    public Integer getSenderId() {
+    public Long getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(Integer senderId) {
+    public void setSenderId(Long senderId) {
         this.senderId = senderId;
     }
 
-    public Integer getRecipientId() {
+    public Long getRecipientId() {
         return recipientId;
     }
 
-    public void setRecipientId(Integer recipientId) {
+    public void setRecipientId(Long recipientId) {
         this.recipientId = recipientId;
     }
 

@@ -18,7 +18,12 @@ public class Connection extends Thread {
     public void run() {
         Message message;
         try {
-            message = (Message) ois.readObject();
+            Command command = (Command) ois.readObject();
+
+            System.out.println(command.getCommand());
+
+            message = command.getMessage();
+
             while (true) {
                 Server.connectionMap.get(message.getRecipientId()).send(message);
                 Server.connectionMap.get(message.getSenderId()).send(message);

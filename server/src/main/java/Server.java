@@ -16,9 +16,11 @@ public class Server {
         try {
             while (true) {
                 Socket socket = server.accept();
+                System.out.println("user accepted");
                 try {
                     Connection connection = new Connection(socket);
                     connectionMap.put(connection.getId(), connection);
+                    System.out.println(connection.getId());
                 } catch (IOException e) {
                     socket.close();
                 }

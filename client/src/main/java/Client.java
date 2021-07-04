@@ -1,26 +1,64 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.Date;
 
 public class Client {
 
+    private static Long id = 0L;
+
+
     public static void main(String[] args) {
-        try (Socket clientSocket = new Socket("localhost", 4004);) {
-            try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
-                 ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
-                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            ) {
+        try {
+            Socket clientSocket = new Socket("localhost", 8080);
+            System.out.println("connect to server");
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+            BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
 
-                System.out.println("Input message");
 
-                String word = reader.readLine();
+            read(ois).start();
+            write(oos, consoleInput).start();
 
-                oos.writeObject(new Message());
-                oos.flush();
-            }
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
+        } finally {
+
         }
 
+
     }
+
+    private static Thread write(ObjectOutputStream oos, BufferedReader consoleInput) {
+
+        return new Thread(() -> {
+            try {
+                System.out.println("Write id");
+                String word = consoleInput.readLine();
+                Long id = Long.parseLong(word);
+                Command command = new Command(Commands.send, new Message(123l, id, new Date(), "Hello World"));
+                oos.writeObject(command);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public static Thread read(ObjectInputStream ois) {
+        return new Thread(() -> {
+
+            try {
+                Message message = (Message) ois.readObject();
+                System.out.println(message.getMessage());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        });
+    }
+
 
 }
