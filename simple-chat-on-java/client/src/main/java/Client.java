@@ -31,16 +31,7 @@ public class Client {
     private static Thread write(ObjectOutputStream oos, BufferedReader consoleInput) {
 
         return new Thread(() -> {
-            try {
-                System.out.println("Write id");
-                String word = consoleInput.readLine();
-                Long id = Long.parseLong(word);
-                Command command = new Command(Commands.send, new Message(123l, id, new Date(), "Hello World"));
-                oos.writeObject(command);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         });
     }
 

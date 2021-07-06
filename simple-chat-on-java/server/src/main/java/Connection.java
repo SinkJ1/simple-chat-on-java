@@ -1,5 +1,7 @@
+
 import java.io.*;
 import java.net.Socket;
+import java.util.UUID;
 
 public class Connection extends Thread {
 
@@ -16,17 +18,17 @@ public class Connection extends Thread {
 
     @Override
     public void run() {
-        Message message;
+
+        String[] auth = new String[]{"SignIn", "Registration"};
+        Menu authMenu = new Menu(auth);
+
+        String uuid = UUID.randomUUID().toString();
+        System.out.println("uuid = " + uuid);
+
         try {
-            Command command = (Command) ois.readObject();
-
-            System.out.println(command.getCommand());
-
-            message = command.getMessage();
-
             while (true) {
-                Server.connectionMap.get(message.getRecipientId()).send(message);
-                Server.connectionMap.get(message.getSenderId()).send(message);
+                send(authMenu);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -36,12 +38,14 @@ public class Connection extends Thread {
 
     }
 
-    private void send(Message message) {
+    private void send(Menu menu) {
         try {
-            ous.writeObject(message);
+            ous.writeObject(menu);
             ous.flush();
         } catch (IOException ignored) {
         }
     }
+
+
 
 }

@@ -11,6 +11,8 @@
         <module>server</module>
         <module>client</module>
         <module>Message</module>
+        <module>menu</module>
+        <module>dao</module>
     </modules>
     <packaging>pom</packaging>
 
